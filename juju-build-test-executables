@@ -1,0 +1,61 @@
+#!/bin/bash
+
+set -e
+set -u
+set -o pipefail
+
+: ${JUJUDIR:=$GOPATH/src/github.com/juju/juju}
+
+directories="$(find $JUJUDIR -name \*_test.go | xargs dirname | sort -u)"
+
+#test_dir=$(mktemp -d)
+test_dir=/var/tmp/foo.d
+
+rm -rf $test_dir
+mkdir -p $test_dir
+mkdir -p $test_dir/results.d
+
+tests=""
+
+for d in $directories; do
+    tests+="$d/$(basename $d).test"
+done
+
+build_dir=$test_dir/build.d
+script_dir=$test_dir/test.d
+
+mkdir -p $build_dir $script_dir
+
+for d in $directories; do
+    test_file="$d/$(basename $d)"
+    test_file=${test_file#${GOPATH}/src/github.com/juju/juju/}
+    test_file=${test_file//\//-}
+    cat <<EOF > $script_dir/${test_file}.bash
+#!/bin/bash
+set -eu
+export TMPDIR=$d/tmp
+mkdir -p $d/tmp
+trap 'rm -rf $d/tmp' EXIT INT TERM
+cd $d
+./$(basename $d).test -test.v "\$@"
+EOF
+    chmod u+x $script_dir/${test_file}.bash
+done
+
+for d in $directories; do
+    test_file="$d/$(basename $d)"
+    test_file=${test_file#${GOPATH}/src/github.com/juju/juju/}
+    test_file=${test_file//\//-}
+    echo $test_file
+    cat <<EOF > $build_dir/${test_file}.bash
+#!/bin/bash
+set -eu
+cd $d
+echo $d
+go test -i -x
+go test -c "\$@"
+EOF
+    chmod u+x $build_dir/${test_file}.bash
+done
+
+make -C $JUJUDIR install

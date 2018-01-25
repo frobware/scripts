@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh -A -Y spicy "dbus-launch emacs --display=\$DISPLAY &" &

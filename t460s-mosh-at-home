@@ -1,0 +1,5 @@
+#!/bin/sh
+
+mosh --forward-agent --no-init --ssh "ssh -X -A" t460s.home -- tmux new-session -s remote-t460s -A
+
+
