@@ -1,3 +1,16 @@
 #!/bin/bash
 
-ssh -A -Y spicy "dbus-launch emacs --display=\$DISPLAY &" &
+frame_parameters() {
+    if [[ -n "${NORV-}" ]]; then
+	echo ""
+    else
+	echo '--frame-parameters="((reverse . t))"'
+    fi
+}
+
+ssh -f -A -Y spicy /usr/local/bin/emacsclient \
+    --alternate-editor='' \
+    --create-frame \
+    --server-file=\$HOME/.emacs.d/server/server \
+    $(frame_parameters) \
+    "$@"

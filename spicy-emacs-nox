@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ssh -t spicy /usr/local/bin/emacsclient \
+    --alternate-editor='' \
+    --tty \
+    --server-file=\$HOME/.emacs.d/server/server \
+    "$@"
