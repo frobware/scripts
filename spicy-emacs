@@ -11,6 +11,5 @@ frame_parameters() {
 ssh -f -A -Y spicy /usr/local/bin/emacsclient \
     --alternate-editor='' \
     --create-frame \
-    --server-file=\$HOME/.emacs.d/server/server \
     $(frame_parameters) \
     "$@"
