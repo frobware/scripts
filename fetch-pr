@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Usage: <remote> <pr#>
+
+git fetch $1 pull/$2/head:pr-$2
