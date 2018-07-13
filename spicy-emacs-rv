@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ssh -f -A -Y spicy /usr/local/bin/emacsclient \
+    --alternate-editor='' \
+    --create-frame \
+    --frame-parameters='"((reverse . t))"' \
+    "$@"
