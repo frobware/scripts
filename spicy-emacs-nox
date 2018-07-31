@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh -t spicy /usr/local/bin/emacsclient \
+ssh -t -A spicy TERM=xterm-24bits emacsclient \
     --alternate-editor='' \
     --tty \
     "$@"

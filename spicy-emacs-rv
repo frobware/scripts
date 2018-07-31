@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh -f -A -Y spicy /usr/local/bin/emacsclient \
+ssh -f -A -Y spicy emacsclient \
     --alternate-editor='' \
     --create-frame \
     --frame-parameters='"((reverse . t))"' \
