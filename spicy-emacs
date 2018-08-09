@@ -4,12 +4,18 @@ frame_parameters() {
     if [[ -n "${NORV-}" ]]; then
 	echo ""
     else
-	echo '--frame-parameters="((reverse . t))"'
+	echo '--frame-parameters="((background-color . \"white\") (foreground-color . \"black\"))"'
     fi
 }
 
-ssh -f -A -Y spicy /usr/local/bin/emacsclient \
+ssh -f -X -A -Y ${REMOTE_HOST:-spicy} emacsclient \
     --alternate-editor='' \
     --create-frame \
     $(frame_parameters) \
     "$@"
+
+# ssh -f -A -Y spicy /usr/local/bin/emacsclient \
+#     --alternate-editor='' \
+#     --create-frame \
+#     $(frame_parameters) \
+#     "$@"
