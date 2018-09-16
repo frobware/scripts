@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh -f -A -Y spicy emacsclient \
+ssh -f -A -Y spicy env XAUTHORITY=/run/user/1000/gdm/Xauthority emacsclient \
     --alternate-editor='' \
     --create-frame \
     --frame-parameters='"((reverse . t))"' \
