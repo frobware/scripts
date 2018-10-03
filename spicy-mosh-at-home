@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#mosh spicy.home -- tmux a
+mosh spicy -- tmux new-session -s remote-spicy -A
+
+

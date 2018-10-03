@@ -1,0 +1,4 @@
+#!/bin/sh
+
+#mosh --forward-agent --no-init --ssh "ssh -A" spicy-mosh -- tmux new-session -s remote-spicy -A
+mosh --no-init --ssh "ssh -A -p 22023" frobware.com -- tmux new-session -s remote-spicy -A
