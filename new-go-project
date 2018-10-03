@@ -1,0 +1,8 @@
+#!/bin/bash
+
+mkdir -p ~/go-projects/$1/src
+cat <<EOF > ~/go-projects/$1/.envrc
+layout go
+EOF
+cd ~/go-projects/$1
+direnv allow
