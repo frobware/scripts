@@ -1,0 +1,76 @@
+#!/bin/bash
+
+set -eu
+
+# This script generates individual ssh config entries for each
+# aws_instance found in the terraform assets state file post an
+# openshift-installer cluster installation.
+#
+# It generates ssh config entries for 'aws_instance' resources only.
+#
+# The output will look like:
+#
+# Host ${cluster_name}-master.0
+#   Hostname 34.234.63.117
+#   User core
+#   ...
+#
+# Host ${cluster_name}-master.1
+#   Hostname 34.227.88.60
+#   User core
+#   ...
+#
+# Host ${cluster_name}-master.2
+#   Hostname 18.208.202.168
+#   User core
+#   ...
+
+# Usage: $ openshift-installer-2-ssh-config /path/to/asset-dir
+#
+# Example:
+#
+# $ openshift-install-2-ssh-config > ~/.ssh/conf.d/openshift-installer/aws.conf
+#
+# and in my ~/.ssh/config I have:
+#
+# Include conf.d/openshift-installer/*.conf
+
+die() {
+    echo "error:" "$@" 2>&1
+    exit 1
+}
+
+instance_nodename() {
+    echo "${1/aws_instance\./}"
+}
+
+asset_dir=${1-$PWD/auth}
+metadata=$asset_dir/metadata.json
+terraform_state=$asset_dir/terraform.tfstate
+
+[ -f "$metadata" ] || die "missing $metadata file"
+[ -f "$terraform_state" ] || die "missing $terraform_state file"
+
+cluster_name=$(jq -r -c '.clusterName' "$metadata")
+aws_region=$(jq -r -c '.aws.region' "$metadata")
+
+instance_query='
+.modules[].resources | to_entries[] | select(.value.type == "aws_instance")
+  | [.key,
+     .value.primary.attributes["public_ip"],
+     .value.primary.attributes["public_dns"],
+     .value.primary.attributes["private_ip"]]
+  | join(" ")'
+
+jq -r -c "$instance_query" "$terraform_state" | while read -r nodename public_ip public_dns private_ip; do
+cat <<EOF
+Host ${cluster_name}-$(instance_nodename "${nodename}")-${aws_region} $public_ip $public_dns # $private_ip
+  Hostname $public_ip
+  User core
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  UserKnownHostsFile ~/.ssh/aws_known_hosts
+  IdentityFile ${OPENSHIFT_INSTALL_SSH_PUB_KEY_PATH:-~/.ssh/id_rsa}
+  IdentitiesOnly yes
+EOF
+done
