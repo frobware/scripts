@@ -10,17 +10,17 @@ set -eu
 #
 # The output will look like:
 #
-# Host ${cluster_name}-master.0
+# Host ${cluster_name}-master.0-${aws_region}
 #   Hostname 34.234.63.117
 #   User core
 #   ...
 #
-# Host ${cluster_name}-master.1
+# Host ${cluster_name}-master.1-${aws_region}
 #   Hostname 34.227.88.60
 #   User core
 #   ...
 #
-# Host ${cluster_name}-master.2
+# Host ${cluster_name}-master.2-${aws_region}
 #   Hostname 18.208.202.168
 #   User core
 #   ...
