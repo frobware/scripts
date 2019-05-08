@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 set -u
@@ -31,7 +31,7 @@ for d in $directories; do
     test_file=${test_file#${GOPATH}/src/github.com/juju/juju/}
     test_file=${test_file//\//-}
     cat <<EOF > $script_dir/${test_file}.bash
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 export TMPDIR=$d/tmp
 mkdir -p $d/tmp
@@ -48,7 +48,7 @@ for d in $directories; do
     test_file=${test_file//\//-}
     echo $test_file
     cat <<EOF > $build_dir/${test_file}.bash
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 cd $d
 echo $d

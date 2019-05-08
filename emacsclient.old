@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ -z "$TMUX" ]] && [[ -f $HOME/.terminfo/x/xterm-24bit ]]; then
     exec env TERM=tmux-24bit /usr/bin/emacsclient "$@"

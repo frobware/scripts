@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ##
 #  Controls TP-LINK HS100,HS110, HS200 wlan smart plugs

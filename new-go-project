@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 mkdir -p ~/go-projects/$1/src
 cat <<EOF > ~/go-projects/$1/.envrc

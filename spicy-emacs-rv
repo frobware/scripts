@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ssh -f -A -Y spicy emacsclient \
     --alternate-editor='' \

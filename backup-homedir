@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 rsync --progress -h --stats -r -tgo -p -l -D --update --delete-after --delete-excluded --exclude=**/*tmp*/ --exclude=**/*cache*/ --exclude=**/*Cache*/ --exclude=**~ --exclude=/mnt/*/** --exclude=/media/*/** --exclude=**/lost+found*/ --exclude=/var/** --exclude=/proc/** --exclude=/dev/** --exclude=/sys/** --exclude=**/*Trash*/ --exclude=**/*trash*/ --exclude=apm4 -X -x /home/aim /run/media/aim/backup/
 
